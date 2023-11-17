@@ -5,13 +5,13 @@ Using a simple repository pattern and a local SQL database.
 
 
 To create a faction you can use this json format:
-
+```
 {
   "entity": {
     "name": "{Faction Name}"
   }
 }
-
+```
 
 Since there are many to many to ...
 
