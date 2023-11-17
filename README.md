@@ -16,3 +16,8 @@ To create a faction you can use this json format:
 Since there are many to many to ...
 
 the dto looks like a lot but it is handled so you only need to create a name for the entity.
+
+
+---------------------------------------------------------------------------------------------
+
+The rest of the program is still in development so don't expect it to work :)
