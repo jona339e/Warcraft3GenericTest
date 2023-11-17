@@ -56,7 +56,9 @@ namespace Warcraft3GenericTest.Controllers
         {
             try
             {
-                var entity = await _repository.MapCreateDTOToEntityAsync<TDTOEntity, T>(DTOEntity.Entity);
+                //var entity = await _repository.GetByNameAsync(DTOEntity.Entity, GetIncludes());
+                var entity = MapCreateDTOToEntity(DTOEntity.Entity);
+
                 var addedEntity = await _repository.AddAsync(entity);
                 return CreatedAtAction(nameof(GetById), new { id = addedEntity.Id }, addedEntity);
             }

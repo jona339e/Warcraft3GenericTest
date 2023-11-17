@@ -5,7 +5,7 @@ namespace Warcraft3GenericTest.DTO
     public class FactionDTO: IIncludeName
     {
         public string Name { get; set; }
-        // Other properties specific to creating a Faction
+        public ICollection<RaceDTO>? Race { get; set; } = new List<RaceDTO>();
     }
 
 }

@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Warcraft3GenericTest.Data;
+using Warcraft3GenericTest.DTO;
 using Warcraft3GenericTest.Interfaces;
 using Warcraft3GenericTest.Models;
 using Warcraft3GenericTest.Repositories;
@@ -17,10 +18,10 @@ namespace Warcraft3GenericTest
 
 
             
-            builder.Services.AddScoped<IGenericRepository<Race>, GenericRepository<Race>>();
-            builder.Services.AddScoped<IGenericRepository<Building>, GenericRepository<Building>>();
-            builder.Services.AddScoped<IGenericRepository<Unit>, GenericRepository<Unit>>();
-            builder.Services.AddScoped<IGenericRepository<Faction>, GenericRepository<Faction>>();
+            builder.Services.AddScoped<IGenericRepository<Race>, GenericRepository<Race, RaceDTO>>();
+            builder.Services.AddScoped<IGenericRepository<Building>, GenericRepository<Building, BuildingDTO>>();
+            builder.Services.AddScoped<IGenericRepository<Unit>, GenericRepository<Unit, UnitDTO>>();
+            builder.Services.AddScoped<IGenericRepository<Faction>, GenericRepository<Faction, FactionDTO>>();
 
 
 

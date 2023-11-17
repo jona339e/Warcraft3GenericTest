@@ -6,10 +6,11 @@ namespace Warcraft3GenericTest.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
         public int FoodCost { get; set; }
         public int GoldCost { get; set; }
         public int LumberCost { get; set; }
+        public float Health { get; set; }
+        public float Damage { get; set; }
         public int RaceId { get; set; }
         public Race Race { get; set; }
         public int BuildingId { get; set; }

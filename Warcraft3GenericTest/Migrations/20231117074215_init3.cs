@@ -5,7 +5,7 @@
 namespace Warcraft3GenericTest.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class init3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -86,10 +86,11 @@ namespace Warcraft3GenericTest.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FoodCost = table.Column<int>(type: "int", nullable: false),
                     GoldCost = table.Column<int>(type: "int", nullable: false),
                     LumberCost = table.Column<int>(type: "int", nullable: false),
+                    Health = table.Column<float>(type: "real", nullable: false),
+                    Damage = table.Column<float>(type: "real", nullable: false),
                     RaceId = table.Column<int>(type: "int", nullable: false),
                     BuildingId = table.Column<int>(type: "int", nullable: false)
                 },

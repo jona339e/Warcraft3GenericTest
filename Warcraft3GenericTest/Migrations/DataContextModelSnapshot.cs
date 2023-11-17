@@ -103,15 +103,17 @@ namespace Warcraft3GenericTest.Migrations
                     b.Property<int>("BuildingId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Damage")
+                        .HasColumnType("real");
 
                     b.Property<int>("FoodCost")
                         .HasColumnType("int");
 
                     b.Property<int>("GoldCost")
                         .HasColumnType("int");
+
+                    b.Property<float>("Health")
+                        .HasColumnType("real");
 
                     b.Property<int>("LumberCost")
                         .HasColumnType("int");

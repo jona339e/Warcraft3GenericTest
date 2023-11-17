@@ -6,7 +6,7 @@ namespace Warcraft3GenericTest.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Unit> Units { get; set; }
+        public ICollection<Unit>? Units { get; set; }
         public int RaceId { get; set; }
         public Race Race { get; set; }
     }

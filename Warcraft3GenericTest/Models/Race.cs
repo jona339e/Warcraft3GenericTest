@@ -6,9 +6,9 @@ namespace Warcraft3GenericTest.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Building> Buildings { get; set; }
+        public ICollection<Building>? Buildings { get; set; }
         public ICollection<Faction> Factions { get; set; }
-        public ICollection<Unit> Units { get; set; }
+        public ICollection<Unit>? Units { get; set; }
 
     }
 }

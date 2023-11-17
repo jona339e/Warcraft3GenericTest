@@ -11,14 +11,62 @@ namespace Warcraft3GenericTest.Controllers
         public FactionController(IGenericRepository<Faction> repository) : base(repository)
         {
         }
-
-        protected override Func<IQueryable<Faction>, IIncludableQueryable<Faction, object>>[] GetIncludes()
+        // Override the mapping method for FactionDTO
+        protected override Faction MapCreateDTOToEntity(FactionDTO createDTO)
         {
-            return new Func<IQueryable<Faction>, IIncludableQueryable<Faction, object>>[]
+            return new Faction
             {
-                query => query.Include(u => u.Races),
-
+                Name = createDTO.Name,
+                Races = createDTO.Race?.Select(raceDTO => MapRaceDTOToRace(raceDTO)).ToList()
             };
         }
+
+
+        private Race MapRaceDTOToRace(RaceDTO raceDTO)
+        {
+            return new Race
+            {
+                Name = raceDTO.Name,
+                Factions = new List<Faction> { MapFactionDTOToFaction(raceDTO.Faction) },
+                Buildings = raceDTO.Building?.Select(buildingDTO => MapBuildingDTOToBuilding(buildingDTO)).ToList(),
+                Units = raceDTO.Unit?.Select(unitDTO => MapUnitDTOToUnit(unitDTO)).ToList()
+            };
+        }
+
+        // Add a method to map BuildingDTO to Building
+        private Building MapBuildingDTOToBuilding(BuildingDTO buildingDTO)
+        {
+            return new Building
+            {
+                Name = buildingDTO.Name,
+                Race = MapRaceDTOToRace(buildingDTO.Race),
+                Units = buildingDTO.Units?.Select(unitDTO => MapUnitDTOToUnit(unitDTO)).ToList()
+            };
+        }
+
+        private Unit MapUnitDTOToUnit(UnitDTO unitDTO)
+        {
+            return new Unit
+            {
+                Name = unitDTO.Name,
+                GoldCost = unitDTO.GoldCost,
+                LumberCost = unitDTO.LumberCost,
+                Health = unitDTO.Health,
+                Damage = unitDTO.Damage,
+                Race = MapRaceDTOToRace(unitDTO.Race),
+                Building = MapBuildingDTOToBuilding(unitDTO.Building)
+            };
+        }
+
+
+        private Faction MapFactionDTOToFaction(FactionDTO factionDTO)
+        {
+            return new Faction
+            {
+                Name = factionDTO.Name,
+                Races = factionDTO.Race?.Select(raceDTO => MapRaceDTOToRace(raceDTO)).ToList()
+            };
+        }
+
     }
 }

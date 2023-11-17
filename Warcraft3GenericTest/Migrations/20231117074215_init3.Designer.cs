@@ -11,8 +11,8 @@ using Warcraft3GenericTest.Data;
 namespace Warcraft3GenericTest.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231116110258_init")]
-    partial class init
+    [Migration("20231117074215_init3")]
+    partial class init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,15 +106,17 @@ namespace Warcraft3GenericTest.Migrations
                     b.Property<int>("BuildingId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("Damage")
+                        .HasColumnType("real");
 
                     b.Property<int>("FoodCost")
                         .HasColumnType("int");
 
                     b.Property<int>("GoldCost")
                         .HasColumnType("int");
+
+                    b.Property<float>("Health")
+                        .HasColumnType("real");
 
                     b.Property<int>("LumberCost")
                         .HasColumnType("int");

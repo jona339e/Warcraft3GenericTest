@@ -1,12 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Warcraft3GenericTest.Data;
+using Warcraft3GenericTest.DTO;
 using Warcraft3GenericTest.Interfaces;
 
 namespace Warcraft3GenericTest.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity>
+    public class GenericRepository<TEntity, TDTOEntity> : IGenericRepository<TEntity>
         where TEntity : class, ITestEntity
+        where TDTOEntity : class , IIncludeName
+
     {
         private readonly DataContext _context;
 
@@ -40,13 +44,6 @@ namespace Warcraft3GenericTest.Repositories
             return await query.FindAsync(id);
         }
 
-        public async Task<TEntity> GetEntityByNameAsync<TInclude>(string name)
-            where TInclude : class, IIncludeName
-        {
-            return await _context.Set<TEntity>().FirstOrDefaultAsync(e => (e as TInclude).Name == name);
-        }
-
-
         public async Task<TEntity> AddAsync(TEntity entity)
         {
             var addedEntity = _context.Set<TEntity>().Add(entity).Entity;
@@ -70,31 +67,33 @@ namespace Warcraft3GenericTest.Repositories
             }
         }
 
-        public async Task<TEntity> MapCreateDTOToEntityAsync<TDTOEntity, TEntity>(TDTOEntity createDTO)
-           where TDTOEntity : class, IIncludeName
-           where TEntity : class
+        public async Task<TEntity> GetByNameAsync<TDTOEntity>(TDTOEntity DTO, params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
+        {
+            // Ensure the DTO implements IIncludeName
+            if (!(DTO is IIncludeName includeNameDTO))
             {
-                var entity = Activator.CreateInstance<TEntity>(); // Create an instance of TEntity
+                throw new ArgumentException("DTO must implement IIncludeName", nameof(DTO));
+            }
 
-                // Assume that TEntity has a property "Name" for the example
-                var nameProperty = typeof(TEntity).GetProperty("Name");
-                if (nameProperty != null)
-                {
-                    // Get the value of the "Name" property from the createDTO
-                    var nameValue = createDTO.GetType().GetProperty("Name")?.GetValue(createDTO);
+            var query = _context.Set<TEntity>().AsQueryable();
 
-                    // Attempt to find an existing entity in the context with the specified name
-                    var existingEntity = await _context.Set<TEntity>().FirstOrDefaultAsync(e => nameProperty.GetValue(e).ToString() == nameValue.ToString());
+            // Apply includes if provided
+            foreach (var include in includes)
+            {
+                query = include(query);
+            }
 
-                    // Set the property to the existing entity or create a new instance if not found
-                    nameProperty.SetValue(entity, existingEntity ?? Activator.CreateInstance<TEntity>());
-                }
+            // Fetch all entities and filter by name
+            var entities = await query.ToListAsync();
+            var entity = entities.OfType<IIncludeName>().FirstOrDefault(e => e.Name == includeNameDTO.Name) as TEntity;
 
-                // Add additional mapping logic based on your requirements
+            if (entity == null)
+            {
+                throw new ArgumentException($"Entity with name '{includeNameDTO.Name}' not found");
+            }
 
-            return entity as TEntity;
+            return entity;
         }
-
 
     }
 }
